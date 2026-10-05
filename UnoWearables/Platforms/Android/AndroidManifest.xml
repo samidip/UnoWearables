@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Same APK installs on phones and watches; watch-only behavior stays inactive on phones -->
+  <uses-feature android:name="android.hardware.type.watch" android:required="false" />
+
+  <!-- Step counter for the Walk page (runtime permission on API 29+) -->
+  <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+  <application android:allowBackup="true" android:supportsRtl="true">
+    <!-- Runs on the watch without a companion phone app -->
+    <meta-data android:name="com.google.android.wearable.standalone" android:value="true" />
+  </application>
+</manifest>

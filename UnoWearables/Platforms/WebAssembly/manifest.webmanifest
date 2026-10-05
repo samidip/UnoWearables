@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "UnoWearables",
+  "display": "standalone",
+  "name": "UnoWearables",
+  "short_name": "UnoWearables",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

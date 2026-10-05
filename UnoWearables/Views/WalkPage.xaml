@@ -1,0 +1,155 @@
+<Page x:Class="UnoWearables.WalkPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{StaticResource WatchBackgroundBrush}">
+
+  <Page.Resources>
+    <!-- Walking cycle (0.9s): legs and arms swing in opposition, body bobs on each step.
+         Uno has no AutoReverse, so each swing is spelled out as there-and-back keyframes. -->
+    <Storyboard x:Name="WalkStoryboard" RepeatBehavior="Forever">
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LeftLegRotation" Storyboard.TargetProperty="Angle">
+        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="-28" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.45" Value="28"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+        <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="-28"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightLegRotation" Storyboard.TargetProperty="Angle">
+        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="28" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.45" Value="-28"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+        <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="28"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="LeftArmRotation" Storyboard.TargetProperty="Angle">
+        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="24" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.45" Value="-24"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+        <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="24"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightArmRotation" Storyboard.TargetProperty="Angle">
+        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="-24" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.45" Value="24"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+        <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="-24"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="BodyBob" Storyboard.TargetProperty="Y">
+        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0" />
+        <LinearDoubleKeyFrame KeyTime="0:0:0.225" Value="-2" />
+        <LinearDoubleKeyFrame KeyTime="0:0:0.45" Value="0" />
+        <LinearDoubleKeyFrame KeyTime="0:0:0.675" Value="-2" />
+        <LinearDoubleKeyFrame KeyTime="0:0:0.9" Value="0" />
+      </DoubleAnimationUsingKeyFrames>
+      <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Ring" Storyboard.TargetProperty="Opacity">
+        <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0.35" />
+        <EasingDoubleKeyFrame KeyTime="0:0:0.45" Value="1"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+        <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0.35"><EasingDoubleKeyFrame.EasingFunction><SineEase EasingMode="EaseInOut" /></EasingDoubleKeyFrame.EasingFunction></EasingDoubleKeyFrame>
+      </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+  </Page.Resources>
+
+  <ScrollViewer VerticalScrollBarVisibility="Hidden"
+                HorizontalScrollMode="Disabled">
+    <StackPanel Padding="20,8"
+                Spacing="4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+      <!-- Walker figure inside a pulsing ring -->
+      <Grid Width="58" Height="58" HorizontalAlignment="Center">
+        <Ellipse x:Name="Ring"
+                 Stroke="{StaticResource WatchWalkBrush}"
+                 StrokeThickness="3"
+                 Opacity="0.35" />
+        <Viewbox Height="40">
+        <Canvas Width="40" Height="56">
+          <Canvas.RenderTransform>
+            <TranslateTransform x:Name="BodyBob" />
+          </Canvas.RenderTransform>
+
+          <!-- Back limbs are dimmer so the stride reads as depth -->
+          <Rectangle Canvas.Left="18" Canvas.Top="14" Width="4" Height="17" RadiusX="2" RadiusY="2"
+                     Fill="{StaticResource WatchWalkBrush}" Opacity="0.55"
+                     RenderTransformOrigin="0.5,0.06">
+            <Rectangle.RenderTransform>
+              <RotateTransform x:Name="RightArmRotation" />
+            </Rectangle.RenderTransform>
+          </Rectangle>
+          <Rectangle Canvas.Left="18" Canvas.Top="31" Width="4" Height="22" RadiusX="2" RadiusY="2"
+                     Fill="{StaticResource WatchWalkBrush}" Opacity="0.55"
+                     RenderTransformOrigin="0.5,0.05">
+            <Rectangle.RenderTransform>
+              <RotateTransform x:Name="RightLegRotation" />
+            </Rectangle.RenderTransform>
+          </Rectangle>
+
+          <!-- Head and torso -->
+          <Ellipse Canvas.Left="14" Canvas.Top="0" Width="12" Height="12"
+                   Fill="{StaticResource WatchWalkBrush}" />
+          <Rectangle Canvas.Left="17" Canvas.Top="13" Width="6" Height="20" RadiusX="3" RadiusY="3"
+                     Fill="{StaticResource WatchWalkBrush}" />
+
+          <!-- Front limbs -->
+          <Rectangle Canvas.Left="18" Canvas.Top="31" Width="4" Height="22" RadiusX="2" RadiusY="2"
+                     Fill="{StaticResource WatchWalkBrush}"
+                     RenderTransformOrigin="0.5,0.05">
+            <Rectangle.RenderTransform>
+              <RotateTransform x:Name="LeftLegRotation" />
+            </Rectangle.RenderTransform>
+          </Rectangle>
+          <Rectangle Canvas.Left="18" Canvas.Top="14" Width="4" Height="17" RadiusX="2" RadiusY="2"
+                     Fill="{StaticResource WatchWalkBrush}"
+                     RenderTransformOrigin="0.5,0.06">
+            <Rectangle.RenderTransform>
+              <RotateTransform x:Name="LeftArmRotation" />
+            </Rectangle.RenderTransform>
+          </Rectangle>
+        </Canvas>
+        </Viewbox>
+      </Grid>
+
+      <TextBlock AutomationProperties.AutomationId="ElapsedTextBlock"
+                 Text="{Binding ElapsedText}"
+                 FontSize="24"
+                 FontWeight="SemiBold"
+                 HorizontalAlignment="Center" />
+
+      <TextBlock AutomationProperties.AutomationId="DistanceTextBlock"
+                 Text="{Binding DistanceText}"
+                 FontSize="14"
+                 HorizontalAlignment="Center"
+                 Foreground="{StaticResource WatchWalkBrush}" />
+
+      <TextBlock AutomationProperties.AutomationId="StepsTextBlock"
+                 Text="{Binding StepsText}"
+                 FontSize="12"
+                 HorizontalAlignment="Center"
+                 Foreground="{StaticResource WatchSecondaryTextBrush}" />
+
+      <!-- Controls sit at the bottom where the round screen is still wide enough for two -->
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8"
+                  Margin="0,2,0,0"
+                  HorizontalAlignment="Center">
+        <Button AutomationProperties.AutomationId="BackButton"
+                AutomationProperties.Name="Back"
+                Style="{StaticResource WatchBackButtonStyle}"
+                VerticalAlignment="Center"
+                Click="OnBackClick">
+          <FontIcon Glyph="&#xE72B;" FontSize="14" />
+        </Button>
+
+        <Button x:Name="ToggleButton"
+                AutomationProperties.AutomationId="ToggleWalkButton"
+                AutomationProperties.Name="{Binding ToggleLabel}"
+                Width="48" Height="48"
+                CornerRadius="24"
+                Padding="0"
+                BorderThickness="0"
+                Background="{StaticResource WatchWalkBrush}"
+                Foreground="Black"
+                Command="{Binding ToggleCommand}">
+          <FontIcon Glyph="{Binding ToggleGlyph}" FontSize="20" />
+        </Button>
+
+        <!-- Balances the back button so the toggle stays centred -->
+        <Border Width="36" />
+      </StackPanel>
+
+    </StackPanel>
+  </ScrollViewer>
+</Page>
